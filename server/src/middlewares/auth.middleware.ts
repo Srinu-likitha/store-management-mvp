@@ -25,13 +25,14 @@ const validateJWT = (token: string) => {
 
 export const verifyUser = (role: UserRole): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    let token = req.cookies.token;
-    if (!token) {
+    // let token = req.cookies.token;
+    let token = '';
+    // if (!token) {
       const authHeader = req.headers.authorization;
       if (authHeader && authHeader.startsWith('Bearer ')) {
         token = authHeader.split(' ')[1];
       }
-    }
+    // }
 
     const payloadObj = validateJWT(token);
     if (!payloadObj.success) {
@@ -69,7 +70,7 @@ export const verifyUser = (role: UserRole): RequestHandler => {
     }
 
     if (!hasRole) {
-      console.log(hasRole);
+      console.log(role, hasRole);
       return res.status(403).json({ success: false, message: 'User Verification Failed' });
     }
 

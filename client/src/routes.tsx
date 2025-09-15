@@ -2,7 +2,9 @@ import type { JSX } from "react";
 import Login from "./components/pages/Login";
 import AppLayout from "./components/ui/Layout/AppLayout";
 import Home from "./components/pages/Home";
-import { HomeIcon } from "lucide-react";
+import { HomeIcon, Inbox } from "lucide-react";
+import Invoice from "./components/pages/Invoices";
+import AddMaterialInvoice from "./components/ui/Invoice/AddMaterialInvoice";
 
 type Route = {
   path: string;
@@ -23,12 +25,31 @@ export const routes: Route = [
     element: <Login />
   },
   {
-    path: "/",
+    path: "/home",
     element: <AppLayout>
       <Home />
     </AppLayout>,
     menu: true,
     name: "Dashboard",
     icon: <HomeIcon size={16} />,
+  },
+  {
+    path: "/material-invoices",
+    element: <AppLayout>
+      <Invoice />
+    </AppLayout>,
+    menu: true,
+    name: "Invoices",
+    icon: <Inbox size={16} />,
+    activeFor: ['/add-invoice']
+  },
+  {
+    path: "/add-invoice",
+    element: <AppLayout>
+      <AddMaterialInvoice />
+    </AppLayout>,
+    menu: false,
+    name: "Invoices",
+    icon: <Inbox size={16} />,
   }
 ]

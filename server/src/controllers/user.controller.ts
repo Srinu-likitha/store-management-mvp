@@ -1,8 +1,75 @@
+import { errorHandler } from "@/utils/error"
 import {Request, Response} from "express"
+import {
+  MaterialInvoiceSchema,
+  ApproveMaterialInvoiceSchema
+} from "@/types/zod";
+import { materialInvoiceService } from "@/services/user.service";
 
 export async function healthCheck(req: Request, res: Response) : Promise<Response> {
   return res.status(200).json({
     success: true,
     message: "Server is up and running"
   })
+}
+
+export async function createMaterialInvoice(req: Request, res: Response): Promise<Response> {
+  try {
+    const data = MaterialInvoiceSchema.parse(req.body);
+    const invoice = await materialInvoiceService.createMaterialInvoice(data);
+    return res.status(201).json({ success: true, message: "created invoice successfully",  data: invoice });
+  } catch (error) {
+    return errorHandler(error, "Create Material Invoice", res);
+  }
+}
+
+export async function updateMaterialInvoice(req: Request, res: Response): Promise<Response> {
+  try {
+    const { id } = req.params;
+    const data = MaterialInvoiceSchema.parse(req.body);
+    const invoice = await materialInvoiceService.updateMaterialInvoice(id, data);
+    return res.status(200).json({ success: true, message: "updated invoice successfully", data: invoice });
+  } catch (error) {
+    return errorHandler(error, "Update Material Invoice", res);
+  }
+}
+
+export async function deleteMaterialInvoice(req: Request, res: Response): Promise<Response> {
+  try {
+    const { id } = req.params;
+    await materialInvoiceService.deleteMaterialInvoice(id);
+    return res.status(200).json({ success: true, message: "Deleted successfully" });
+  } catch (error) {
+    return errorHandler(error, "Delete Material Invoice", res);
+  }
+}
+
+export async function getMaterialInvoice(req: Request, res: Response): Promise<Response> {
+  try {
+    const { id } = req.params;
+    const invoice = await materialInvoiceService.getMaterialInvoice(id);
+    return res.status(200).json({ success: true, message: "get invoices successfull", data: invoice });
+  } catch (error) {
+    return errorHandler(error, "Get Material Invoice", res);
+  }
+}
+
+export async function listMaterialInvoices(req: Request, res: Response): Promise<Response> {
+  try {
+    const invoices = await materialInvoiceService.listMaterialInvoices();
+    return res.status(200).json({ success: true, message: "get invoices success"  ,data: invoices });
+  } catch (error) {
+    return errorHandler(error, "List Material Invoices", res);
+  }
+}
+
+export async function approveMaterialInvoice(req: Request, res: Response): Promise<Response> {
+  try {
+    const { id } = req.params;
+    const { approved } = ApproveMaterialInvoiceSchema.parse(req.body);
+    const invoice = await materialInvoiceService.approveMaterialInvoice(id, approved);
+    return res.status(200).json({ success: true, data: invoice });
+  } catch (error) {
+    return errorHandler(error, "Approve Material Invoice", res);
+  }
 }

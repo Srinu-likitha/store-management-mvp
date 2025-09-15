@@ -6,8 +6,13 @@ export const API_ROUTES = {
     LOGIN: `${BASE_URL}/auth/login`,
     ME: `${BASE_URL}/auth/me`,
   },
-  ADMIN: {
-
+  MATERIAL_INVOICES: {
+    LIST_MATERIAL_INVOICES: `${BASE_URL}/user/list/material-invoices`,
+    CREATE_MATERIAL_INVOICE: `${BASE_URL}/user/create/material-invoice`,
+    UPDATE_MATERIAL_INVOICE: (id: string) => `${BASE_URL}/user/update/material-invoice/${id}`,
+    DELETE_MATERIAL_INVOICE: (id: string) => `${BASE_URL}/user/delete/material-invoice/${id}`,
+    GET_MATERIAL_INVOICE: (id: string) => `${BASE_URL}/user/get/material-invoice/${id}`,
+    APPROVE_MATERIAL_INVOICE: `${BASE_URL}/user/approve/material-invoice`,
   }
 } as const;
 

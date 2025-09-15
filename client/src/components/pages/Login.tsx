@@ -26,7 +26,7 @@ export default function Login() {
 
   useEffect(() => {
     if (getToken) {
-      navigate('/');
+      navigate('/home');
     }
   }, [])
 
@@ -37,7 +37,7 @@ export default function Login() {
     },
     onSuccess: (data: LoginResponse) => {
       setToken(data.data.token);
-      navigate('/');
+      navigate('/home');
     }
   })
 

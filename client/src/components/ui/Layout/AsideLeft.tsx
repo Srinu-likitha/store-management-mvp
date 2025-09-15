@@ -6,7 +6,7 @@ export default function AsideLeft() {
   const location = useLocation();
 
   return (
-    <aside className="bg-gray-100 w-full h-screen overflow-x-hidden overflow-y-auto">
+    <aside className="bg-indigo-50 w-full h-screen overflow-x-hidden overflow-y-auto">
       <div className="flex items-center gap-4 p-6">
         <img src="/logo.png" className="h-[40px]" />
         <h1 className="text-xl">NEXSYNC</h1>

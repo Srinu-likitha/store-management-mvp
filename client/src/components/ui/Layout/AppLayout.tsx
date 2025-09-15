@@ -6,7 +6,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="col-span-1">
         <AsideLeft />
       </div>
-      <div className="md:col-span-4 2xl:col-span-4 bg-white">
+      <div className="md:col-span-4 2xl:col-span-5 bg-white w-full h-screen overflow-y-auto p-6">
         {children}
       </div>
     </main>
