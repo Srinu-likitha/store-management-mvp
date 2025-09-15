@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import type { ApproveDcEntryInput } from "../../types/zod";
 import { userStore } from "../../state/global";
+import * as XLSX from "xlsx";
 
 export interface DcEntryQueryResponse extends Response {
   data: {
@@ -78,8 +79,27 @@ export default function Dc() {
   };
 
   const handleDownloadExcel = () => {
-    // Placeholder for Excel download logic
-    alert("Excel download not implemented");
+    if (!dcEntries.length) {
+      alert("No DC entries to export");
+      return;
+    }
+    // Prepare data for Excel
+    const data = dcEntries.map(entry => ({
+      "Vendor Name": entry.vendorName,
+      "DC Number": entry.dcNumber,
+      "Vehicle Number": entry.vehicleNumber,
+      "Receipt Date": formatDate(entry.dateOfReceipt),
+      "Quantity": `${entry.receivedQuantity} ${entry.uom}`,
+      "Material Description": entry.materialDescription,
+      "Purpose of Material": entry.purposeOfMaterial,
+      "BMRN Number": entry.bmrnNumber,
+      "Approved": entry.approved ? "Yes" : "No",
+      "Created At": formatDate(entry.createdAt),
+    }));
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "DC Entries");
+    XLSX.writeFile(wb, "dc-entries.xlsx");
   };
 
   const formatDate = (date: Date) => {

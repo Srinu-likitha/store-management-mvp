@@ -26,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 import type { ApproveMaterialInvoiceInput } from "../../types/zod";
 import type { ErrorRes } from "../../types";
 import { userStore } from "../../state/global";
+import * as XLSX from "xlsx";
 
 type MaterialCategory =
   "CIVIL"
@@ -118,8 +119,40 @@ export default function Invoice() {
   };
 
   const handleDownloadExcel = () => {
-    // Placeholder for Excel download logic
-    alert("Excel download not implemented");
+    if (filteredInvoices.length === 0) {
+      alert("No invoices to export");
+      return;
+    }
+    // Prepare data for Excel
+    const excelData = filteredInvoices.map(inv => {
+      const totalAmount = Array.isArray(inv.InvoiceMaterialItem)
+        ? inv.InvoiceMaterialItem.reduce((sum, item) => sum + (item.cost || 0), 0)
+        : 0;
+      return {
+        "Vendor Name": inv.vendorName,
+        "Invoice Number": inv.invoiceNumber,
+        "Invoice Date": new Date(inv.invoiceDate).toLocaleDateString(),
+        "Category": inv.materialCategory,
+        "Amount": totalAmount,
+        "Approved": inv.approved ? "Yes" : "No",
+        "Paid": inv.paid ? "Yes" : "No",
+        "PO Number": inv.poNumber,
+        "PO Date": inv.poDate ? new Date(inv.poDate).toLocaleDateString() : '',
+        "Challan Number": inv.deliveryChallanNumber,
+        "Vehicle Number": inv.vehicleNumber,
+        "Contact Number": inv.vendorContactNumber,
+        "Purpose": inv.purposeOfMaterial,
+        "MRN Number": inv.mrnNumber,
+        "GIN Number": inv.ginNumber,
+        "HNS Code": inv.hnsCode,
+        "UOM": inv.uom,
+        "Remarks": inv.remarks || '',
+      };
+    });
+    const ws = XLSX.utils.json_to_sheet(excelData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Invoices");
+    XLSX.writeFile(wb, "Material_Invoices.xlsx");
   };
 
   const invoices = marterilaInvoicesQuery.data?.data || [];
