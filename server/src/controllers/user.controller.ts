@@ -68,6 +68,16 @@ export async function approveMaterialInvoice(req: Request, res: Response): Promi
   }
 }
 
+export async function approveInvoicePayment(req: Request, res: Response): Promise<Response> {
+  try {
+    const { approved, id } = ApproveMaterialInvoiceSchema.parse(req.body);
+    const invoice = await materialInvoiceService.approvePayment(id, approved);
+    return res.status(200).json({ success: true, data: invoice });
+  } catch (error) {
+    return errorHandler(error, "Approve Material Invoice", res);
+  }
+}
+
 export async function createMaterialDc(req: Request, res: Response): Promise<Response> {
   try {
     const data = DcEntrySchema.parse(req.body);

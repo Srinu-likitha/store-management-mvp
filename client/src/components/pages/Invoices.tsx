@@ -112,6 +112,19 @@ export default function Invoice() {
     }
   })
 
+  const approvePaymentMutation = useMutation({
+    mutationFn: async (data: ApproveMaterialInvoiceInput) => {
+      const res = await api.post(API_ROUTES.MATERIAL_INVOICES.APPROVE_PAYMENT, data);
+      return res.data;
+    },
+    onSuccess: () => {
+      marterilaInvoicesQuery.refetch();
+    },
+    onError: (error: ErrorRes) => {
+      alert(error.response.data.message);
+    }
+  })
+
   const handleExpand = (id: string) => {
     setExpandedRows((prev) =>
       prev.includes(id) ? prev.filter(rowId => rowId !== id) : [...prev, id]
@@ -331,9 +344,21 @@ export default function Invoice() {
                         <td className="px-4 py-3 text-center">
                           {inv.paid ? (
                             <span className="inline-block px-2 py-0.5 rounded bg-green-50 text-green-700 text-xs font-medium mt-1">Paid</span>
-                          ) : (
-                            <span className="inline-block px-2 py-0.5 rounded bg-yellow-50 text-yellow-700 text-xs font-medium mt-1">Unpaid</span>
-                          )}
+                          ) : (role == "ACCOUNTS_MANAGER") ?
+                            (
+                              <button
+                                className="px-2 py-0.5 rounded bg-cyan-600 text-white text-xs font-medium hover:bg-cyan-700 transition-colors"
+                                onClick={() => {
+                                  console.log(inv.id)
+                                  approvePaymentMutation.mutate({ id: inv.id, approved: true })
+                                }}
+                                disabled={approvePaymentMutation.status === "pending"}
+                              >
+                                {approvePaymentMutation.status === "pending" ? 'Approving...' : 'Approve'}
+                              </button>
+                            ) : (
+                              <span className="inline-block px-2 py-0.5 rounded bg-yellow-50 text-yellow-700 text-xs font-medium mt-1">Unpaid</span>
+                            )}
                         </td>
                       </tr>
                       {expandedRows.includes(inv.id) && (

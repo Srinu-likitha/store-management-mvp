@@ -13,6 +13,7 @@ export const API_ROUTES = {
     DELETE_MATERIAL_INVOICE: (id: string) => `${BASE_URL}/user/delete/material-invoice/${id}`,
     GET_MATERIAL_INVOICE: (id: string) => `${BASE_URL}/user/get/material-invoice/${id}`,
     APPROVE_MATERIAL_INVOICE: `${BASE_URL}/user/approve/material-invoice`,
+    APPROVE_PAYMENT: `${BASE_URL}/user/approve/invoice-payment`,
   },
   MATERIAL_DCS: {
     LIST_MATERIAL_DCS: `${BASE_URL}/user/list/dc-entries`,

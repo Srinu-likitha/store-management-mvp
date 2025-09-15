@@ -73,6 +73,13 @@ export const materialInvoiceService = {
       data: { approved },
       include: { InvoiceMaterialItem: true }
     });
+  },
+  async approvePayment(id: string, approved: boolean) {
+    return prisma.materialInvoice.update({
+      where: { id },
+      data: { paid: approved },
+      include: { InvoiceMaterialItem: true }
+    });
   }
 };
 

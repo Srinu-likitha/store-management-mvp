@@ -234,7 +234,7 @@ export default function Dc() {
                           <span className="inline-flex items-center px-6 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                             <FaCheckCircle size={12} />
                           </span>
-                        ) : (role == "ACCOUNTS_MANAGER") ? (
+                        ) : (role == "PROCUREMENT_MANAGER") ? (
                           <button
                             className="px-2 py-0.5 rounded bg-cyan-600 text-white text-xs font-medium hover:bg-cyan-700 transition-colors"
                             onClick={() => dcApprovalMutation.mutate({ id: entry.id, approved: true })}
