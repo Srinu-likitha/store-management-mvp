@@ -13,7 +13,12 @@ export const API_ROUTES = {
     DELETE_MATERIAL_INVOICE: (id: string) => `${BASE_URL}/user/delete/material-invoice/${id}`,
     GET_MATERIAL_INVOICE: (id: string) => `${BASE_URL}/user/get/material-invoice/${id}`,
     APPROVE_MATERIAL_INVOICE: `${BASE_URL}/user/approve/material-invoice`,
-  }
+  },
+  MATERIAL_DCS: {
+    LIST_MATERIAL_DCS: `${BASE_URL}/user/list/dc-entries`,
+    CREATE_MATERIAL_DC: `${BASE_URL}/user/create/dc-entry`,
+    APPROVE_MATERIAL_DC: `${BASE_URL}/user/approve/dc-entry`,
+  },
 } as const;
 
 export const localKey = {

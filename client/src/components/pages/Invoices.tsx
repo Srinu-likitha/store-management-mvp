@@ -73,7 +73,7 @@ interface InvoiceMaterialItem {
   materialInvoiceId: string;
 }[];
 
-interface MaterialInvoicesQueryResponse extends Response {
+export interface MaterialInvoicesQueryResponse extends Response {
   data: MaterialInvoice[];
 }
 

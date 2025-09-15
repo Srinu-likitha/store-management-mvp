@@ -5,6 +5,8 @@ import Home from "./components/pages/Home";
 import { HomeIcon, Inbox } from "lucide-react";
 import Invoice from "./components/pages/Invoices";
 import AddMaterialInvoice from "./components/ui/Invoice/AddMaterialInvoice";
+import Dc from "./components/pages/Dc";
+import AddDc from "./components/ui/dc/AddDc";
 
 type Route = {
   path: string;
@@ -49,7 +51,26 @@ export const routes: Route = [
       <AddMaterialInvoice />
     </AppLayout>,
     menu: false,
-    name: "Invoices",
+    name: "Add Invoices",
+    icon: <Inbox size={16} />,
+  },
+    {
+    path: "/material-dc",
+    element: <AppLayout>
+      <Dc />
+    </AppLayout>,
+    menu: true,
+    name: "Material Dc",
+    icon: <Inbox size={16} />,
+    activeFor: ['/add-dc']
+  },
+  {
+    path: "/add-dc",
+    element: <AppLayout>
+      <AddDc />
+    </AppLayout>,
+    menu: false,
+    name: "Add Dc",
     icon: <Inbox size={16} />,
   }
 ]
