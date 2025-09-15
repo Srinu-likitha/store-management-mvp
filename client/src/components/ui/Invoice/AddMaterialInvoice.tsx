@@ -6,7 +6,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MaterialInvoiceSchema, type MaterialInvoiceInput } from "../../../types/zod";
 import { useState } from "react";
-import { Plus, PlusCircle } from "lucide-react";
+import { Plus } from "lucide-react";
 
 type MaterialCategory = "CIVIL" | "PLUMBING" | "ELECTRICAL" | "INTERIOR" | "EXTERIOR" | "OTHER"
 

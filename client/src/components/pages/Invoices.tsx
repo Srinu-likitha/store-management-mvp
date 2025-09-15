@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import {
   FaChevronDown,
   FaChevronUp,
-  FaDownload,
   FaSearch,
   FaFileInvoiceDollar,
   FaBuilding,
