@@ -27,7 +27,7 @@ export async function me(req: Request, res: Response): Promise<Response> {
     return res.status(200).json({
       success: true,
       message: "Login successful",
-      data: { user }
+      data: user
     });
   } catch (error) {
     return errorHandler(error, "Error in me controller", res);

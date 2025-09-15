@@ -60,8 +60,7 @@ export async function listMaterialInvoices(req: Request, res: Response): Promise
 
 export async function approveMaterialInvoice(req: Request, res: Response): Promise<Response> {
   try {
-    const { id } = req.params;
-    const { approved } = ApproveMaterialInvoiceSchema.parse(req.body);
+    const { approved, id } = ApproveMaterialInvoiceSchema.parse(req.body);
     const invoice = await materialInvoiceService.approveMaterialInvoice(id, approved);
     return res.status(200).json({ success: true, data: invoice });
   } catch (error) {
@@ -100,8 +99,7 @@ export async function listMaterialDcs(req: Request, res: Response): Promise<Resp
 
 export async function approveMaterialDc(req: Request, res: Response): Promise<Response> {
   try {
-    const { id } = req.params;
-    const { approved } = ApproveDcEntrySchema.parse(req.body);
+    const { approved, id } = ApproveDcEntrySchema.parse(req.body);
     const dc = await materialDcService.approveMaterialDc(id, approved);
     return res.status(200).json({ success: true, data: dc });
   } catch (error) {

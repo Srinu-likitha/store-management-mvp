@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import api from "../../lib/axios/axios";
 import { API_ROUTES } from "../../lib/api";
 import React, { useState } from "react";
@@ -18,10 +18,14 @@ import {
   FaBarcode,
   FaPhone,
   FaPaperclip,
-  FaBox
+  FaBox,
+  FaCheckCircle
 } from "react-icons/fa";
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import type { ApproveMaterialInvoiceInput } from "../../types/zod";
+import type { ErrorRes } from "../../types";
+import { userStore } from "../../state/global";
 
 type MaterialCategory =
   "CIVIL"
@@ -55,6 +59,10 @@ interface MaterialInvoice {
   mrnNumber: string;
   ginNumber: string;
   InvoiceMaterialItem: InvoiceMaterialItem;
+  approved: boolean;
+  paid: boolean;
+  paidOn: string | null;
+  remarks: string | null;
 }
 
 interface InvoiceMaterialItem {
@@ -79,6 +87,7 @@ export interface MaterialInvoicesQueryResponse extends Response {
 
 export default function Invoice() {
   const navigate = useNavigate();
+  const role = userStore(state => state.role);
   const [search, setSearch] = useState("");
   const [expandedRows, setExpandedRows] = useState<string[]>([]);
   const marterilaInvoicesQuery = useQuery({
@@ -89,7 +98,18 @@ export default function Invoice() {
     }
   })
 
-  if (marterilaInvoicesQuery.isSuccess) console.log(marterilaInvoicesQuery.data);
+  const invoiceApproveMuation = useMutation({
+    mutationFn: async (data: ApproveMaterialInvoiceInput) => {
+      const res = await api.post(API_ROUTES.MATERIAL_INVOICES.APPROVE_MATERIAL_INVOICE, data);
+      return res.data;
+    },
+    onSuccess: () => {
+      marterilaInvoicesQuery.refetch();
+    },
+    onError: (error: ErrorRes) => {
+      alert(error.response.data.message);
+    }
+  })
 
   const handleExpand = (id: string) => {
     setExpandedRows((prev) =>
@@ -154,13 +174,17 @@ export default function Invoice() {
             </div>
 
             <div className="flex gap-4">
-              <button
-                onClick={() => navigate("/add-invoice")}
-                className="flex items-center gap-2 bg-primary hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
-              >
-                <Plus className="text-lg" />
-                <span>Add Invoice</span>
-              </button>
+              {
+                role == "STORE_INCHARGE" ? (
+                  <button
+                    onClick={() => navigate("/add-invoice")}
+                    className="flex items-center gap-2 bg-primary hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
+                  >
+                    <Plus className="text-lg" />
+                    <span>Add Invoice</span>
+                  </button>
+                ) : null
+              }
               <button
                 onClick={handleDownloadExcel}
                 className="flex items-center gap-2 bg-primary hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
@@ -208,6 +232,16 @@ export default function Invoice() {
                     <span>Amount</span>
                   </div>
                 </th>
+                <th className="py-3 px-4 text-center">
+                  <div className="flex items-center gap-1 justify-center">
+                    <span>Approval</span>
+                  </div>
+                </th>
+                <th className="py-3 px-4 text-center">
+                  <div className="flex items-center gap-1 justify-center">
+                    <span>Payment</span>
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -239,10 +273,39 @@ export default function Invoice() {
                         <td className="px-4 py-3 text-right font-semibold text-gray-900">
                           {formatCurrency(totalAmount)}
                         </td>
+                        <td className="px-4 py-3 text-center">
+                          {inv.approved ? (
+                            <span className="inline-flex items-center px-6 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              <FaCheckCircle size={12} />
+                            </span>
+                          ) : (role == "PROCUREMENT_MANAGER") ?
+                            (
+                              <button
+                                className="px-2 py-0.5 rounded bg-cyan-600 text-white text-xs font-medium hover:bg-cyan-700 transition-colors"
+                                onClick={() => {
+                                  console.log(inv.id)
+                                  invoiceApproveMuation.mutate({ id: inv.id, approved: true })
+                                }}
+                                disabled={invoiceApproveMuation.status === "pending"}
+                              >
+                                {invoiceApproveMuation.status === "pending" ? 'Approving...' : 'Approve'}
+                              </button>
+                            ) : (
+                              <span className="inline-block px-2 py-0.5 rounded bg-yellow-50 text-yellow-700 text-xs font-medium mt-1">Pending</span>
+                            )
+                          }
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          {inv.paid ? (
+                            <span className="inline-block px-2 py-0.5 rounded bg-green-50 text-green-700 text-xs font-medium mt-1">Paid</span>
+                          ) : (
+                            <span className="inline-block px-2 py-0.5 rounded bg-yellow-50 text-yellow-700 text-xs font-medium mt-1">Unpaid</span>
+                          )}
+                        </td>
                       </tr>
                       {expandedRows.includes(inv.id) && (
                         <tr>
-                          <td colSpan={6} className="px-4 py-3 bg-gray-50">
+                          <td colSpan={8} className="px-4 py-3 bg-gray-50 w-full">
                             <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
                               <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
                                 <FaReceipt className="text-cyan-500" />
@@ -398,7 +461,7 @@ export default function Invoice() {
                 })
               ) : (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center">
+                  <td colSpan={7} className="px-4 py-8 text-center">
                     <div className="flex flex-col items-center justify-center text-gray-400 py-8">
                       <FaFileInvoiceDollar className="text-4xl mb-3" />
                       <p className="text-lg">No invoices found</p>

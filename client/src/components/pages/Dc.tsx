@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { API_ROUTES } from "../../lib/api"
 import api from "../../lib/axios/axios"
-import type { Response } from "../../types";
+import type { ErrorRes, Response } from "../../types";
 import React, { useState } from "react";
 import {
   FaChevronDown,
@@ -21,6 +21,8 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
+import type { ApproveDcEntryInput } from "../../types/zod";
+import { userStore } from "../../state/global";
 
 export interface DcEntryQueryResponse extends Response {
   data: {
@@ -44,6 +46,7 @@ export interface DcEntryQueryResponse extends Response {
 
 export default function Dc() {
   const navigate = useNavigate();
+  const role = userStore(state => state.role);
   const [search, setSearch] = useState("");
   const [expandedRows, setExpandedRows] = useState<string[]>([]);
 
@@ -52,6 +55,19 @@ export default function Dc() {
     queryFn: async () => {
       const res = await api.get<DcEntryQueryResponse>(API_ROUTES.MATERIAL_DCS.LIST_MATERIAL_DCS);
       return res.data;
+    }
+  })
+
+  const dcApprovalMutation = useMutation({
+    mutationFn: async (data: ApproveDcEntryInput) => {
+      const res = await api.post<Response>(API_ROUTES.MATERIAL_DCS.APPROVE_MATERIAL_DC, data);
+      return res.data;
+    },
+    onSuccess: () => {
+      dcQuery.refetch();
+    },
+    onError: (error: ErrorRes) => {
+      alert(error.response.data.message);
     }
   })
 
@@ -107,13 +123,17 @@ export default function Dc() {
             </div>
 
             <div className="flex gap-4">
-              <button
-                onClick={() => navigate("/add-dc")}
-                className="flex items-center gap-2 bg-primary hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
-              >
-                <Plus className="text-lg" />
-                <span>Add Dc</span>
-              </button>
+              {
+                role == "STORE_INCHARGE" ? (
+                  <button
+                    onClick={() => navigate("/add-dc")}
+                    className="flex items-center gap-2 bg-primary hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
+                  >
+                    <Plus className="text-lg" />
+                    <span>Add Dc</span>
+                  </button>
+                ): null
+              }
               <button
                 onClick={handleDownloadExcel}
                 className="flex items-center gap-2 bg-primary hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
@@ -164,7 +184,7 @@ export default function Dc() {
                 <th className="py-3 px-4 text-left">
                   <div className="flex items-center gap-1">
                     <FaCheckCircle className="text-gray-500" />
-                    <span>Status</span>
+                    <span>Approval</span>
                   </div>
                 </th>
               </tr>
@@ -191,13 +211,19 @@ export default function Dc() {
                       </td>
                       <td className="px-4 py-3">
                         {entry.approved ? (
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            <FaCheckCircle className="mr-1" /> Approved
+                          <span className="inline-flex items-center px-6 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <FaCheckCircle size={12} />
                           </span>
+                        ) : (role == "ACCOUNTS_MANAGER") ? (
+                          <button
+                            className="px-2 py-0.5 rounded bg-cyan-600 text-white text-xs font-medium hover:bg-cyan-700 transition-colors"
+                            onClick={() => dcApprovalMutation.mutate({ id: entry.id, approved: true })}
+                            disabled={dcApprovalMutation.status === "pending"}
+                          >
+                            {dcApprovalMutation.status === "pending" ? 'Approving...' : 'Approve'}
+                          </button>
                         ) : (
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                            <FaTimesCircle className="mr-1" /> Pending
-                          </span>
+                          <span className="inline-block px-2 py-0.5 rounded bg-yellow-50 text-yellow-700 text-xs font-medium mt-1">Pending</span>
                         )}
                       </td>
                     </tr>

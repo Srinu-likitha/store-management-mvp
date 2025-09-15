@@ -26,7 +26,8 @@ const CATEGORY_COLORS: Record<string, string> = {
   ELECTRICAL: "#0282a6",
   INTERIOR: "#10b981",
   EXTERIOR: "#8b5cf6",
-  OTHER: "#64748b"
+  OTHER: "#64748b",
+  COMPLEMENTARY_TO_TEAL: "#f46a3e"
 };
 
 const MATERIAL_CATEGORIES = ["CIVIL", "PLUMBING", "ELECTRICAL", "INTERIOR", "EXTERIOR", "OTHER"];
@@ -54,10 +55,17 @@ export default function Home() {
       invoice => invoice.materialCategory === category
     ) || [];
 
-    console.log(`Invoices for category ${category}:`, categoryInvoices);
-
+    // Sum costs from InvoiceMaterialItem array for each invoice
     const totalCost = categoryInvoices.reduce((sum, invoice) => {
-      return sum + (invoice.InvoiceMaterialItem?.cost || 0);
+      if (Array.isArray(invoice.InvoiceMaterialItem)) {
+        return sum + invoice.InvoiceMaterialItem
+          .filter(item => item.category === category)
+          .reduce((itemSum, item) => itemSum + (item.cost || 0), 0);
+      } else if (invoice.InvoiceMaterialItem && invoice.InvoiceMaterialItem.category === category) {
+        // fallback for single object (if ever)
+        return sum + (invoice.InvoiceMaterialItem.cost || 0);
+      }
+      return sum;
     }, 0);
 
     return {
@@ -153,10 +161,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen p-6">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Material Management Dashboard</h1>
-        <p className="text-gray-600">Overview of material deliveries and invoices</p>
-      </header>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
