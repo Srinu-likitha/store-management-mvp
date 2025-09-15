@@ -18,6 +18,6 @@ router.post("/approve/material-invoice", validateInput(ApproveMaterialInvoiceSch
 // Material DC Routes
 router.post("/create/dc-entry", validateInput(DcEntrySchema), verifyUser("STORE_INCHARGE"), createMaterialDc);
 router.get("/list/dc-entries", listMaterialDcs);
-router.post("/approve/dc-entry", validateInput(ApproveDcEntrySchema), verifyUser("STORE_INCHARGE"), approveMaterialDc);
+router.post("/approve/dc-entry", validateInput(ApproveDcEntrySchema), verifyUser("ACCOUNTS_MANAGER"), approveMaterialDc);
 
 export default router
