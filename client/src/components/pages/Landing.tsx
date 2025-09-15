@@ -1,15 +1,10 @@
-import { useState } from 'react';
 import { 
   FiArrowRight, 
-  FiCheck, 
   FiClipboard, 
   FiFileText, 
   FiPieChart, 
   FiShield, 
-  FiUsers,
   FiTruck,
-  FiBarChart2,
-  FiLock
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
@@ -119,25 +114,21 @@ export default function Landing() {
               step="1"
               title="Add Materials"
               description="Input material details, quantities, and specifications into the system."
-              icon={<FiCheck className="h-6 w-6 text-white" />}
             />
             <StepCard 
               step="2"
               title="Create Requests"
               description="Generate material requests or invoices for approval based on project needs."
-              icon={<FiFileText className="h-6 w-6 text-white" />}
             />
             <StepCard 
               step="3"
               title="Approve & Track"
               description="Managers approve requests and track material status in real-time."
-              icon={<FiClipboard className="h-6 w-6 text-white" />}
             />
             <StepCard 
               step="4"
               title="Analyze & Optimize"
               description="Use dashboard analytics to optimize material usage and reduce costs."
-              icon={<FiBarChart2 className="h-6 w-6 text-white" />}
             />
           </div>
         </div>
@@ -253,7 +244,7 @@ function FeatureCard({ icon, title, description }: { icon: React.ReactNode, titl
 }
 
 // Step Card Component
-function StepCard({ step, title, description, icon }: { step: string, title: string, description: string, icon: React.ReactNode }) {
+function StepCard({ step, title, description }: { step: string, title: string, description: string }) {
   return (
     <div className="flex flex-col items-center text-center">
       <div className="bg-blue-600 h-14 w-14 rounded-full flex items-center justify-center text-white font-bold text-xl mb-4">
