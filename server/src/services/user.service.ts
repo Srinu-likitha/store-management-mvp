@@ -1,6 +1,6 @@
 import { AppError } from "@/utils/error/errors";
 import { prisma } from "@/utils/prisma";
-import { MaterialInvoiceInput } from "@/types/zod";
+import { MaterialInvoiceInput, DcEntryInput } from "@/types/zod";
 
 export const userService = {
   getUserById: async (id: string) => {
@@ -74,4 +74,31 @@ export const materialInvoiceService = {
       include: { InvoiceMaterialItem: true }
     });
   }
+};
+
+export const materialDcService = {
+  async createMaterialDc(data: DcEntryInput) {
+    return prisma.dcEntry.create({
+      data: {
+        ...data,
+        dateOfReceipt: new Date(data.dateOfReceipt),
+        receivedQuantity: Number(data.receivedQuantity),
+        approved: data.approved ?? false,
+      },
+    });
+  },
+  async getMaterialDc(id: string) {
+    return prisma.dcEntry.findUnique({
+      where: { id },
+    });
+  },
+  async listMaterialDcs() {
+    return prisma.dcEntry.findMany();
+  },
+  async approveMaterialDc(id: string, approved: boolean) {
+    return prisma.dcEntry.update({
+      where: { id },
+      data: { approved },
+    });
+  },
 };

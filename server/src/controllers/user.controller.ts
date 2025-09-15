@@ -2,16 +2,11 @@ import { errorHandler } from "@/utils/error"
 import {Request, Response} from "express"
 import {
   MaterialInvoiceSchema,
-  ApproveMaterialInvoiceSchema
+  ApproveMaterialInvoiceSchema,
+  DcEntrySchema,
+  ApproveDcEntrySchema
 } from "@/types/zod";
-import { materialInvoiceService } from "@/services/user.service";
-
-export async function healthCheck(req: Request, res: Response) : Promise<Response> {
-  return res.status(200).json({
-    success: true,
-    message: "Server is up and running"
-  })
-}
+import { materialInvoiceService, materialDcService } from "@/services/user.service";
 
 export async function createMaterialInvoice(req: Request, res: Response): Promise<Response> {
   try {
@@ -71,5 +66,45 @@ export async function approveMaterialInvoice(req: Request, res: Response): Promi
     return res.status(200).json({ success: true, data: invoice });
   } catch (error) {
     return errorHandler(error, "Approve Material Invoice", res);
+  }
+}
+
+export async function createMaterialDc(req: Request, res: Response): Promise<Response> {
+  try {
+    const data = DcEntrySchema.parse(req.body);
+    const dc = await materialDcService.createMaterialDc(data);
+    return res.status(201).json({ success: true, message: "created DC successfully", data: dc });
+  } catch (error) {
+    return errorHandler(error, "Create Material DC", res);
+  }
+}
+
+export async function getMaterialDc(req: Request, res: Response): Promise<Response> {
+  try {
+    const { id } = req.params;
+    const dc = await materialDcService.getMaterialDc(id);
+    return res.status(200).json({ success: true, message: "get DC successfull", data: dc });
+  } catch (error) {
+    return errorHandler(error, "Get Material DC", res);
+  }
+}
+
+export async function listMaterialDcs(req: Request, res: Response): Promise<Response> {
+  try {
+    const dcs = await materialDcService.listMaterialDcs();
+    return res.status(200).json({ success: true, message: "get DCs success", data: dcs });
+  } catch (error) {
+    return errorHandler(error, "List Material DCs", res);
+  }
+}
+
+export async function approveMaterialDc(req: Request, res: Response): Promise<Response> {
+  try {
+    const { id } = req.params;
+    const { approved } = ApproveDcEntrySchema.parse(req.body);
+    const dc = await materialDcService.approveMaterialDc(id, approved);
+    return res.status(200).json({ success: true, data: dc });
+  } catch (error) {
+    return errorHandler(error, "Approve Material DC", res);
   }
 }

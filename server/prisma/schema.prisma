@@ -106,6 +106,8 @@ model DcEntry {
   dcAttachment        String
   bmrnNumber          String
 
+  approved Boolean   @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   createdBy String?

@@ -57,6 +57,29 @@ export const ApproveMaterialInvoiceSchema = z.object({
   approved: z.boolean(),
 });
 
+export const DcEntrySchema = z.object({
+  id: z.string().optional(),
+  dateOfReceipt: z.string(),
+  vendorName: z.string(),
+  dcNumber: z.string(),
+  vehicleNumber: z.string(),
+  materialDescription: z.string(),
+  uom: z.string(),
+  receivedQuantity: z.number(),
+  purposeOfMaterial: z.string(),
+  dcAttachment: z.string(),
+  bmrnNumber: z.string(),
+  approved: z.boolean().optional(),
+  remarks: z.string().optional(),
+});
+
+export const ApproveDcEntrySchema = z.object({
+  id: z.string(),
+  approved: z.boolean(),
+});
+
 export type MaterialInvoiceInput = z.infer<typeof MaterialInvoiceSchema>;
 export type InvoiceMaterialItemInput = z.infer<typeof InvoiceMaterialItemSchema>;
 export type ApproveMaterialInvoiceInput = z.infer<typeof ApproveMaterialInvoiceSchema>;
+export type DcEntryInput = z.infer<typeof DcEntrySchema>;
+export type ApproveDcEntryInput = z.infer<typeof ApproveDcEntrySchema>;
