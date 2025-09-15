@@ -23,7 +23,7 @@ const validateJWT = (token: string) => {
   }
 }
 
-export const verifyUser = (role: UserRole): RequestHandler => {
+export const verifyUser = (role: UserRole | "ALL"): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
     // let token = req.cookies.token;
     let token = '';
@@ -59,11 +59,14 @@ export const verifyUser = (role: UserRole): RequestHandler => {
       case "STORE_INCHARGE":
         hasRole = user.role === "STORE_INCHARGE";
         break;
-      case "STORE_INCHARGE":
-        hasRole = user.role === "STORE_INCHARGE";
+      case "PROCUREMENT_MANAGER":
+        hasRole = user.role === "PROCUREMENT_MANAGER";
         break;
       case "ACCOUNTS_MANAGER":
         hasRole = user.role === "ACCOUNTS_MANAGER";
+        break;
+      case "ALL":
+        hasRole = true;
         break;
       default:
         return res.status(400).json({ success: false, message: 'Invalid role specified' });

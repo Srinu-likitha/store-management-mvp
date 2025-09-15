@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { userStore } from "../state/global";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { API_ROUTES } from "../lib/api";
 import api from "../lib/axios/axios";
 
@@ -10,27 +10,30 @@ async function getMe() {
   return res.data;
 }
 
-export default function useCheckLogin() {
-  const { token } = userStore();
-  const navigate = useNavigate();
+interface AxiosErr extends Error {
+  status?: number;
+}
 
-  const meMutation = useMutation({
-    mutationFn: getMe,
-    onSuccess: () => {
-      console.log("User is logged in");
-      window.location.reload();
-    },
-    onError: () => {
-      navigate('/login');
-    }
-  })
+export default function useCheckLogin() {
+  const navigate = useNavigate();
+  const token = userStore(state => state.token);
+
+  const mequery = useQuery({
+    queryKey: ["me"],
+    queryFn: getMe,
+    enabled: !!token,
+    retry: false,
+  });
 
   useEffect(() => {
-    console.log("Checking login");
+    const error = mequery.error as AxiosErr | null;
     if (!token) {
-      navigate('/login');
-    } else {
-      meMutation.mutate();
+      console.log("No token found, redirecting to login.");
+      navigate("/login", { replace: true });
+    } else if (error?.status === 403) {
+      console.log("Error fetching user data:", error);
+      navigate("/login", { replace: true });
     }
-  }, []);
+  }, [token, mequery.error, navigate]);
+
 }
