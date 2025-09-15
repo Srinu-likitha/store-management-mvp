@@ -7,6 +7,7 @@ import Invoice from "./components/pages/Invoices";
 import AddMaterialInvoice from "./components/ui/Invoice/AddMaterialInvoice";
 import Dc from "./components/pages/Dc";
 import AddDc from "./components/ui/dc/AddDc";
+import Landing from "./components/pages/Landing";
 
 type Route = {
   path: string;
@@ -21,6 +22,10 @@ export const routes: Route = [
   {
     path: '*',
     element: <div>Sorry not found</div>
+  },
+  {
+    path: '/',
+    element: <Landing />
   },
   {
     path: "/login",

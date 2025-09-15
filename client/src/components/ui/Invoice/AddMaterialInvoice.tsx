@@ -83,7 +83,7 @@ export default function AddMaterialInvoice() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`px-6 py-2 bg-primary text-white rounded-md hover:bg-green-700 font-medium ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
+              className={`px-6 py-2 bg-primary text-white rounded-md hover:bg-cyan-700 font-medium ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
             >
               {isSubmitting ? 'Processing...' : 'Submit Invoice'}
             </button>
@@ -289,7 +289,7 @@ export default function AddMaterialInvoice() {
               <button
                 type="button"
                 onClick={() => append({ category: "CIVIL", hnsCode: "", description: "", quantity: 0, ratePerUnit: 0, cost: 0 })}
-                className="flex items-center gap-2 justify-between px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700 text-sm font-medium"
+                className="flex items-center gap-2 justify-between px-4 py-2 bg-primary text-white rounded-md hover:bg-cyan-700 text-sm font-medium"
               >
                 Add Item
                 <Plus size={12} className="text-white" />

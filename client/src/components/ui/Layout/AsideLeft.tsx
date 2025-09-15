@@ -6,37 +6,41 @@ export default function AsideLeft() {
   const location = useLocation();
 
   return (
-    <aside className="bg-indigo-50 w-full h-screen overflow-x-hidden overflow-y-auto">
-      <div className="flex items-center gap-4 p-6">
-        <img src="/logo.png" className="h-[40px]" />
-        <h1 className="text-xl">NEXSYNC</h1>
+    <aside className="bg-gradient-to-b from-cyan-900 to-cyan-800 w-full h-screen overflow-x-hidden overflow-y-auto text-white rounded-r-2xl">
+      <div className="flex items-center gap-3 p-5 border-b border-cyan-700/50">
+        <img src="/logo.png" className="h-9 filter brightness-0 invert" />
+        <h1 className="text-xl font-bold tracking-wide">NEXSYNC</h1>
       </div>
-      <div className="flex flex-col mt-6">
-        {
-          routes.map((route) => {
-            if (!route.menu) return null;
+      
+      <div className="flex flex-col mt-8 px-3">
+        {routes.map((route) => {
+          if (!route.menu) return null;
 
-            const isActive = getIsActive(route.path, location.pathname);
+          const isActive = getIsActive(route.path, location.pathname);
 
-            return (
-              <Link
-                key={route.path}
-                to={route.path}
-                className={isActive ? activeStyle : defaultStyle}
-              >
-                {route.icon || <Link2 className="w-4 h-4" />}
-                {route.name || route.path.replace('/', '')}
-              </Link>
-            );
-          })
-        }
+          return (
+            <Link
+              key={route.path}
+              to={route.path}
+              className={`relative flex items-center gap-3 py-3 px-4 my-1 rounded-xl transition-all duration-200 text-sm font-medium
+                ${isActive 
+                  ? 'bg-white text-cyan-800 shadow-lg' 
+                  : 'text-cyan-100 hover:bg-cyan-700/50 hover:text-white'
+                }`}
+            >
+              {route.icon || <Link2 className="w-5 h-5" />}
+              <span>{route.name || route.path.replace('/', '')}</span>
+              
+              {isActive && (
+                <div className="absolute -left-2 w-1 h-6 bg-white rounded-full"></div>
+              )}
+            </Link>
+          );
+        })}
       </div>
     </aside>
   );
 }
-
-const defaultStyle = 'text-gray-700 p-4 px-6 rounded-l-md hover:bg-white transition-colors flex items-center gap-2 text-sm capitalize';
-const activeStyle = 'text-primary bg-white p-4 px-[calc(var(--spacing)*6-8px)] rounded-l-md hover:bg-white transition-colors border-l-8 border-primary flex items-center gap-2 text-sm capitalize font-semibold';
 
 function getIsActive(routePath: string, currentPath: string): boolean {
   // Exact match
@@ -51,4 +55,3 @@ function getIsActive(routePath: string, currentPath: string): boolean {
   // Check activeFor paths
   return (route.activeFor || []).some(path => currentPath.startsWith(path));
 }
-

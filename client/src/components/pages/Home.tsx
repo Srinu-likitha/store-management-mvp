@@ -23,7 +23,7 @@ import {
 const CATEGORY_COLORS: Record<string, string> = {
   CIVIL: "#3b82f6",
   PLUMBING: "#ef4444",
-  ELECTRICAL: "#f59e0b",
+  ELECTRICAL: "#0282a6",
   INTERIOR: "#10b981",
   EXTERIOR: "#8b5cf6",
   OTHER: "#64748b"
@@ -54,6 +54,8 @@ export default function Home() {
       invoice => invoice.materialCategory === category
     ) || [];
 
+    console.log(`Invoices for category ${category}:`, categoryInvoices);
+
     const totalCost = categoryInvoices.reduce((sum, invoice) => {
       return sum + (invoice.InvoiceMaterialItem?.cost || 0);
     }, 0);
@@ -63,7 +65,12 @@ export default function Home() {
       value: totalCost,
       color: CATEGORY_COLORS[category]
     };
-  }).filter(item => item.value > 0);
+  });
+
+  // Calculate total spending for category percentage labels
+  const totalCategorySpending = categorySpendingData.reduce((sum, cat) => sum + cat.value, 0);
+
+  console.log("Category Spending Data:", categorySpendingData);
 
   // Monthly spending data
   const monthlySpending = materialInvoicesQuery.data?.data?.reduce((acc, invoice) => {
@@ -111,7 +118,7 @@ export default function Home() {
 
   const dcStatusData = [
     { name: 'Approved', value: dcApprovalData?.approved || 0, color: '#10b981' },
-    { name: 'Pending', value: dcApprovalData?.pending || 0, color: '#f59e0b' }
+    { name: 'Pending', value: dcApprovalData?.pending || 0, color: '#0282a6' }
   ];
 
   // Recent activity
@@ -145,7 +152,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 rounded-lg">
+    <div className="min-h-screen p-6">
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Material Management Dashboard</h1>
         <p className="text-gray-600">Overview of material deliveries and invoices</p>
@@ -190,7 +197,11 @@ export default function Home() {
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
-                  label={({ name, value }) => `${name}: ${(value ?? 0 * 100)}%`}
+                  label={({ name, value }) => {
+                    const val = typeof value === 'number' ? value : 0;
+                    const percent = totalCategorySpending > 0 ? ((val / totalCategorySpending) * 100).toFixed(1) : '0';
+                    return `${name}: ${percent}%`;
+                  }}
                 >
                   {categorySpendingData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
@@ -230,7 +241,7 @@ export default function Home() {
                 <Tooltip formatter={(value) => [`₹${Number(value).toLocaleString('en-IN')}`, 'Spending']} />
                 <Legend />
                 <Bar dataKey="total" fill="#8b5cf6" name="Total Spending" />
-                <Bar dataKey="invoices" fill="#f59e0b" name="Number of Invoices" />
+                <Bar dataKey="invoices" fill="#0282a6" name="Number of Invoices" />
               </BarChart>
             </ResponsiveContainer>
           </div>

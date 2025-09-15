@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: theme(colors.indigo.700);
-  --color-primary-light: theme(colors.indigo.600);
+  --color-primary: theme(colors.cyan.700);
+  --color-primary-light: theme(colors.cyan.600);
   --color-bg: theme(colors.gray.50);
-  --color-secondary: theme(colors.indigo.200);
-  --color-secondary-light: theme(colors.indigo.100);
+  --color-secondary: theme(colors.cyan.200);
+  --color-secondary-light: theme(colors.cyan.100);
 
   --text-md: 14px;
 }
@@ -27,7 +27,7 @@ button {
 }
 
 .input {
-  @apply border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full text-sm
+  @apply border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 w-full text-sm
 }
 
 .no-scrollbar {

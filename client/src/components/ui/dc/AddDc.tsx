@@ -64,12 +64,12 @@ export default function AddDc() {
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           {/* Header */}
-          <div className="bg-indigo-600 px-6 py-4">
+          <div className="bg-gradient-to-b from-cyan-900 to-cyan-800 px-6 py-4">
             <h1 className="text-xl font-semibold text-white flex items-center gap-2">
               <FaPlusCircle className="text-white text-xl" />
               Add New Delivery Challan
             </h1>
-            <p className="text-indigo-100 text-sm mt-1">Fill in the details below to create a new DC entry</p>
+            <p className="text-cyan-100 text-sm mt-1">Fill in the details below to create a new DC entry</p>
           </div>
           
           {/* Form */}
@@ -78,13 +78,13 @@ export default function AddDc() {
               {/* Date of Receipt */}
               <div className="space-y-2">
                 <label className=" text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <FaCalendarAlt className="text-indigo-500" />
+                  <FaCalendarAlt className="text-cyan-500" />
                   Date of Receipt
                 </label>
                 <input 
                   type="date" 
                   {...register("dateOfReceipt")}
-                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 ${
                     errors.dateOfReceipt ? "border-red-500" : "border-gray-300"
                   }`}
                 />
@@ -98,12 +98,12 @@ export default function AddDc() {
               {/* Vendor Name */}
               <div className="space-y-2">
                 <label className=" text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <FaBuilding className="text-indigo-500" />
+                  <FaBuilding className="text-cyan-500" />
                   Vendor Name
                 </label>
                 <input 
                   {...register("vendorName")}
-                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 ${
                     errors.vendorName ? "border-red-500" : "border-gray-300"
                   }`}
                   placeholder="Enter vendor name"
@@ -118,12 +118,12 @@ export default function AddDc() {
               {/* DC Number */}
               <div className="space-y-2">
                 <label className=" text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <FaHashtag className="text-indigo-500" />
+                  <FaHashtag className="text-cyan-500" />
                   DC Number
                 </label>
                 <input 
                   {...register("dcNumber")}
-                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 ${
                     errors.dcNumber ? "border-red-500" : "border-gray-300"
                   }`}
                   placeholder="Enter DC number"
@@ -138,12 +138,12 @@ export default function AddDc() {
               {/* Vehicle Number */}
               <div className="space-y-2">
                 <label className=" text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <FaTruck className="text-indigo-500" />
+                  <FaTruck className="text-cyan-500" />
                   Vehicle Number
                 </label>
                 <input 
                   {...register("vehicleNumber")}
-                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 ${
                     errors.vehicleNumber ? "border-red-500" : "border-gray-300"
                   }`}
                   placeholder="Enter vehicle number"
@@ -158,13 +158,13 @@ export default function AddDc() {
               {/* Material Description */}
               <div className="space-y-2 md:col-span-2">
                 <label className=" text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <FaBox className="text-indigo-500" />
+                  <FaBox className="text-cyan-500" />
                   Material Description
                 </label>
                 <textarea 
                   {...register("materialDescription")}
                   rows={3}
-                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 ${
                     errors.materialDescription ? "border-red-500" : "border-gray-300"
                   }`}
                   placeholder="Describe the material received"
@@ -179,12 +179,12 @@ export default function AddDc() {
               {/* UOM */}
               <div className="space-y-2">
                 <label className=" text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <FaRuler className="text-indigo-500" />
+                  <FaRuler className="text-cyan-500" />
                   Unit of Measure
                 </label>
                 <select 
                   {...register("uom")}
-                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 ${
                     errors.uom ? "border-red-500" : "border-gray-300"
                   }`}
                 >
@@ -206,14 +206,14 @@ export default function AddDc() {
               {/* Received Quantity */}
               <div className="space-y-2">
                 <label className=" text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <FaCube className="text-indigo-500" />
+                  <FaCube className="text-cyan-500" />
                   Received Quantity
                 </label>
                 <input 
                   type="number" 
                   step="any" 
                   {...register("receivedQuantity", { valueAsNumber: true })}
-                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 ${
                     errors.receivedQuantity ? "border-red-500" : "border-gray-300"
                   }`}
                   placeholder="Enter quantity"
@@ -228,13 +228,13 @@ export default function AddDc() {
               {/* Purpose of Material */}
               <div className="space-y-2 md:col-span-2">
                 <label className=" text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <FaClipboardList className="text-indigo-500" />
+                  <FaClipboardList className="text-cyan-500" />
                   Purpose of Material
                 </label>
                 <textarea 
                   {...register("purposeOfMaterial")}
                   rows={2}
-                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 ${
                     errors.purposeOfMaterial ? "border-red-500" : "border-gray-300"
                   }`}
                   placeholder="Describe the purpose of this material"
@@ -249,12 +249,12 @@ export default function AddDc() {
               {/* DC Attachment */}
               <div className="space-y-2">
                 <label className=" text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <FaPaperclip className="text-indigo-500" />
+                  <FaPaperclip className="text-cyan-500" />
                   DC Attachment URL
                 </label>
                 <input 
                   {...register("dcAttachment")}
-                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 ${
                     errors.dcAttachment ? "border-red-500" : "border-gray-300"
                   }`}
                   placeholder="Paste attachment URL"
@@ -269,12 +269,12 @@ export default function AddDc() {
               {/* BMRN Number */}
               <div className="space-y-2">
                 <label className=" text-sm font-medium text-gray-700 flex items-center gap-2">
-                  <FaBarcode className="text-indigo-500" />
+                  <FaBarcode className="text-cyan-500" />
                   BMRN Number
                 </label>
                 <input 
                   {...register("bmrnNumber")}
-                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 ${
                     errors.bmrnNumber ? "border-red-500" : "border-gray-300"
                   }`}
                   placeholder="Enter BMRN number"
@@ -300,7 +300,7 @@ export default function AddDc() {
               <button
                 type="submit"
                 disabled={createMaterialDcMuation.isPending}
-                className="flex items-center justify-center gap-2 px-6 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center justify-center gap-2 px-6 py-2 text-sm font-medium text-white bg-primary hover:bg-cyan-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {createMaterialDcMuation.isPending ? (
                   <>

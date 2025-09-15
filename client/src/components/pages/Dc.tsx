@@ -83,9 +83,9 @@ export default function Dc() {
 
   return (
     <div>
-      <div className="w-full bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         {/* Header */}
-        <div className="bg-indigo-600 px-6 py-4 flex items-center">
+        <div className="bg-gradient-to-b from-cyan-900 to-cyan-800 px-6 py-4 flex items-center">
           <FaFileAlt className="text-white text-2xl mr-3" />
           <h1 className="text-xl font-semibold text-white">Delivery Challan Entries</h1>
         </div>
@@ -102,21 +102,21 @@ export default function Dc() {
                 placeholder="Search by vendor, DC #, or vehicle..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full"
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 w-full"
               />
             </div>
 
             <div className="flex gap-4">
               <button
                 onClick={() => navigate("/add-dc")}
-                className="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
+                className="flex items-center gap-2 bg-primary hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
               >
                 <Plus className="text-lg" />
                 <span>Add Dc</span>
               </button>
               <button
                 onClick={handleDownloadExcel}
-                className="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
+                className="flex items-center gap-2 bg-primary hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
               >
                 <FaFileExcel className="text-lg" />
                 <span>Export to Excel</span>
@@ -177,7 +177,7 @@ export default function Dc() {
                       <td className="px-4 py-3 text-center">
                         <button
                           onClick={() => handleExpand(entry.id)}
-                          className="text-indigo-600 hover:text-indigo-800 p-1 rounded-full hover:bg-indigo-50 transition-colors"
+                          className="text-cyan-600 hover:text-cyan-800 p-1 rounded-full hover:bg-cyan-50 transition-colors"
                         >
                           {expandedRows.includes(entry.id) ? <FaChevronUp /> : <FaChevronDown />}
                         </button>
@@ -206,7 +206,7 @@ export default function Dc() {
                         <td colSpan={7} className="px-4 py-3 bg-gray-50">
                           <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
                             <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                              <FaFileAlt className="text-indigo-500" />
+                              <FaFileAlt className="text-cyan-500" />
                               Delivery Challan Details
                             </h3>
 
@@ -216,7 +216,7 @@ export default function Dc() {
                                   <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Vendor Information</h4>
                                   <div className="space-y-2">
                                     <p className="text-sm text-gray-600 flex items-center gap-2">
-                                      <FaBuilding className="text-indigo-400" />
+                                      <FaBuilding className="text-cyan-400" />
                                       <span className="font-medium">Vendor Name:</span> {entry.vendorName}
                                     </p>
                                   </div>
@@ -226,15 +226,15 @@ export default function Dc() {
                                   <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Delivery Information</h4>
                                   <div className="space-y-2">
                                     <p className="text-sm text-gray-600 flex items-center gap-2">
-                                      <FaTruck className="text-indigo-400" />
+                                      <FaTruck className="text-cyan-400" />
                                       <span className="font-medium">Vehicle Number:</span> {entry.vehicleNumber || 'N/A'}
                                     </p>
                                     <p className="text-sm text-gray-600 flex items-center gap-2">
-                                      <FaHashtag className="text-indigo-400" />
+                                      <FaHashtag className="text-cyan-400" />
                                       <span className="font-medium">DC Number:</span> {entry.dcNumber}
                                     </p>
                                     <p className="text-sm text-gray-600 flex items-center gap-2">
-                                      <FaHashtag className="text-indigo-400" />
+                                      <FaHashtag className="text-cyan-400" />
                                       <span className="font-medium">BMRN Number:</span> {entry.bmrnNumber || 'N/A'}
                                     </p>
                                   </div>
@@ -252,7 +252,7 @@ export default function Dc() {
                                       <span className="font-medium">Purpose:</span> {entry.purposeOfMaterial}
                                     </p>
                                     <p className="text-sm text-gray-600 flex items-center gap-2">
-                                      <FaCube className="text-indigo-400" />
+                                      <FaCube className="text-cyan-400" />
                                       <span className="font-medium">Quantity:</span> {entry.receivedQuantity} {entry.uom}
                                     </p>
                                   </div>
@@ -262,11 +262,11 @@ export default function Dc() {
                                   <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Dates & Status</h4>
                                   <div className="space-y-2">
                                     <p className="text-sm text-gray-600 flex items-center gap-2">
-                                      <FaCalendarAlt className="text-indigo-400" />
+                                      <FaCalendarAlt className="text-cyan-400" />
                                       <span className="font-medium">Receipt Date:</span> {formatDate(entry.dateOfReceipt)}
                                     </p>
                                     <p className="text-sm text-gray-600 flex items-center gap-2">
-                                      <FaCalendarAlt className="text-indigo-400" />
+                                      <FaCalendarAlt className="text-cyan-400" />
                                       <span className="font-medium">Created At:</span> {formatDate(entry.createdAt)}
                                     </p>
                                     <p className="text-sm text-gray-600">
@@ -287,10 +287,10 @@ export default function Dc() {
                                 {entry.dcAttachment && (
                                   <div>
                                     <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Attachments</h4>
-                                    <p className="text-sm text-indigo-600 flex items-center gap-2">
-                                      <FaPaperclip className="text-indigo-400" />
+                                    <p className="text-sm text-cyan-600 flex items-center gap-2">
+                                      <FaPaperclip className="text-cyan-400" />
                                       <span className="font-medium">DC Attachment:</span>
-                                      <a href={entry.dcAttachment} target="_blank" rel="noopener noreferrer" className="underline hover:text-indigo-800">
+                                      <a href={entry.dcAttachment} target="_blank" rel="noopener noreferrer" className="underline hover:text-cyan-800">
                                         View document
                                       </a>
                                     </p>
@@ -323,7 +323,7 @@ export default function Dc() {
         {dcQuery.isLoading && (
           <div className="p-8 text-center">
             <div className="inline-flex items-center">
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-cyan-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>

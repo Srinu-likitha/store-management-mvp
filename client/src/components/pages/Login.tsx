@@ -55,7 +55,7 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-100 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl overflow-hidden w-full max-w-md">
         <div className="p-8">
           <div className="text-center mb-8">
@@ -79,7 +79,7 @@ export default function Login() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
                   placeholder="you@example.com"
                 />
               </div>
@@ -100,7 +100,7 @@ export default function Login() {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className="block w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                  className="block w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition"
                   placeholder="••••••••"
                 />
                 <button
@@ -116,7 +116,7 @@ export default function Login() {
                 </button>
               </div>
               <div className="mt-2 text-right">
-                <a href="#" className="text-sm text-indigo-600 hover:text-indigo-500 font-medium">
+                <a href="#" className="text-sm text-cyan-600 hover:text-cyan-500 font-medium">
                   Forgot password?
                 </a>
               </div>
@@ -125,7 +125,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loginMutation.isPending}
-              className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-cyan-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loginMutation.isPending ? "Signing in..." : "Sign in"}
             </button>
@@ -144,14 +144,14 @@ export default function Login() {
             <div className="mt-4 grid grid-cols-2 gap-3">
               <button
                 type="button"
-                className="inline-flex justify-center items-center space-x-2 py-2 px-4 bg-white border border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
+                className="inline-flex justify-center items-center space-x-2 py-2 px-4 bg-white border border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition"
               >
                 <CircleArrowRight size={20} className="text-red-500" />
                 <span>Google</span>
               </button>
               <button
                 type="button"
-                className="inline-flex justify-center items-center space-x-2 py-2 px-4 bg-white border border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition"
+                className="inline-flex justify-center items-center space-x-2 py-2 px-4 bg-white border border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition"
               >
                 <CircleArrowRight size={20} className="text-gray-800" />
                 <span>GitHub</span>
@@ -162,7 +162,7 @@ export default function Login() {
           <div className="mt-8 text-center">
             <p className="text-gray-600">
               Don't have an account?{" "}
-              <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <a href="#" className="font-medium text-cyan-600 hover:text-cyan-500">
                 Sign up
               </a>
             </p>

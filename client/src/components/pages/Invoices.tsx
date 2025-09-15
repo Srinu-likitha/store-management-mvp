@@ -130,9 +130,9 @@ export default function Invoice() {
 
   return (
     <div>
-      <div className="w-full bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         {/* Header */}
-        <div className="bg-indigo-600 px-6 py-4 flex items-center">
+        <div className="bg-gradient-to-b from-cyan-900 to-cyan-800 px-6 py-4 flex items-center">
           <FaFileInvoiceDollar className="text-white text-2xl mr-3" />
           <h1 className="text-xl font-semibold text-white">Material Invoices</h1>
         </div>
@@ -149,21 +149,21 @@ export default function Invoice() {
                 placeholder="Search by vendor or invoice number..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full"
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 w-full"
               />
             </div>
 
             <div className="flex gap-4">
               <button
                 onClick={() => navigate("/add-invoice")}
-                className="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
+                className="flex items-center gap-2 bg-primary hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
               >
                 <Plus className="text-lg" />
                 <span>Add Invoice</span>
               </button>
               <button
                 onClick={handleDownloadExcel}
-                className="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
+                className="flex items-center gap-2 bg-primary hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
               >
                 <FaFileExcel className="text-lg" />
                 <span>Export to Excel</span>
@@ -223,7 +223,7 @@ export default function Invoice() {
                         <td className="px-4 py-3 text-center">
                           <button
                             onClick={() => handleExpand(inv.id)}
-                            className="text-indigo-600 hover:text-indigo-800 p-1 rounded-full hover:bg-indigo-50 transition-colors"
+                            className="text-cyan-600 hover:text-cyan-800 p-1 rounded-full hover:bg-cyan-50 transition-colors"
                           >
                             {expandedRows.includes(inv.id) ? <FaChevronUp /> : <FaChevronDown />}
                           </button>
@@ -245,7 +245,7 @@ export default function Invoice() {
                           <td colSpan={6} className="px-4 py-3 bg-gray-50">
                             <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
                               <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                                <FaReceipt className="text-indigo-500" />
+                                <FaReceipt className="text-cyan-500" />
                                 Invoice Details
                               </h3>
 
@@ -254,11 +254,11 @@ export default function Invoice() {
                                   <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Vendor Information</h4>
                                   <div>
                                     <p className="text-sm text-gray-600 flex items-center gap-2">
-                                      <FaBuilding className="text-indigo-400" />
+                                      <FaBuilding className="text-cyan-400" />
                                       <span className="font-medium">Vendor:</span> {inv.vendorName}
                                     </p>
                                     <p className="text-sm text-gray-600 flex items-center gap-2 mt-1">
-                                      <FaPhone className="text-indigo-400" />
+                                      <FaPhone className="text-cyan-400" />
                                       <span className="font-medium">Contact:</span> {inv.vendorContactNumber || 'N/A'}
                                     </p>
                                   </div>
@@ -268,18 +268,18 @@ export default function Invoice() {
                                   <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Invoice Information</h4>
                                   <div>
                                     <p className="text-sm text-gray-600 flex items-center gap-2">
-                                      <FaHashtag className="text-indigo-400" />
+                                      <FaHashtag className="text-cyan-400" />
                                       <span className="font-medium">Invoice #:</span> {inv.invoiceNumber}
                                     </p>
                                     <p className="text-sm text-gray-600 flex items-center gap-2 mt-1">
-                                      <FaCalendarAlt className="text-indigo-400" />
+                                      <FaCalendarAlt className="text-cyan-400" />
                                       <span className="font-medium">Date:</span> {new Date(inv.invoiceDate).toLocaleDateString()}
                                     </p>
                                     {inv.invoiceAttachment && (
-                                      <p className="text-sm text-indigo-600 flex items-center gap-2 mt-1">
-                                        <FaPaperclip className="text-indigo-400" />
+                                      <p className="text-sm text-cyan-600 flex items-center gap-2 mt-1">
+                                        <FaPaperclip className="text-cyan-400" />
                                         <span className="font-medium">Attachment:</span>
-                                        <a href={inv.invoiceAttachment} target="_blank" rel="noopener noreferrer" className="underline hover:text-indigo-800">
+                                        <a href={inv.invoiceAttachment} target="_blank" rel="noopener noreferrer" className="underline hover:text-cyan-800">
                                           View document
                                         </a>
                                       </p>
@@ -291,15 +291,15 @@ export default function Invoice() {
                                   <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Delivery Information</h4>
                                   <div>
                                     <p className="text-sm text-gray-600 flex items-center gap-2">
-                                      <FaTruck className="text-indigo-400" />
+                                      <FaTruck className="text-cyan-400" />
                                       <span className="font-medium">Vehicle #:</span> {inv.vehicleNumber || 'N/A'}
                                     </p>
                                     <p className="text-sm text-gray-600 flex items-center gap-2 mt-1">
-                                      <FaBarcode className="text-indigo-400" />
+                                      <FaBarcode className="text-cyan-400" />
                                       <span className="font-medium">Challan #:</span> {inv.deliveryChallanNumber || 'N/A'}
                                     </p>
                                     <p className="text-sm text-gray-600 flex items-center gap-2 mt-1">
-                                      <FaCalendarAlt className="text-indigo-400" />
+                                      <FaCalendarAlt className="text-cyan-400" />
                                       <span className="font-medium">Receipt Date:</span> {new Date(inv.dateOfReceipt).toLocaleDateString()}
                                     </p>
                                   </div>
@@ -353,7 +353,7 @@ export default function Invoice() {
 
                               <div className="mt-4">
                                 <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-2">
-                                  <FaBox className="text-indigo-400" />
+                                  <FaBox className="text-cyan-400" />
                                   Material Items
                                 </h4>
                                 <div className="overflow-x-auto">
