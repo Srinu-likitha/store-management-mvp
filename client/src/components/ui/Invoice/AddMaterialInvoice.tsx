@@ -8,7 +8,7 @@ import { MaterialInvoiceSchema, type MaterialInvoiceInput } from "../../../types
 import { useState } from "react";
 import { Plus } from "lucide-react";
 
-type MaterialCategory = "CIVIL" | "PLUMBING" | "ELECTRICAL" | "INTERIOR" | "EXTERIOR" | "OTHER"
+// type MaterialCategory = "CIVIL" | "PLUMBING" | "ELECTRICAL" | "INTERIOR" | "EXTERIOR" | "OTHER"
 
 export default function AddMaterialInvoice() {
   const [isSubmitting, setIsSubmitting] = useState(false);
