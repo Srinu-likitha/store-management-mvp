@@ -1,5 +1,7 @@
-import { errorHandler } from "@/utils/error"
-import {Request, Response} from "express"
+import { errorHandler } from "@/utils/error";
+import { AppError } from "@/utils/error/errors";
+import { uploadInvoiceAttachmentFromBase64 } from "@/utils/storage";
+import { Request, Response } from "express";
 import {
   MaterialInvoiceSchema,
   ApproveMaterialInvoiceSchema,
@@ -8,9 +10,57 @@ import {
 } from "@/types/zod";
 import { materialInvoiceService, materialDcService } from "@/services/user.service";
 
+type MaterialInvoiceRequestBody = Record<string, any> & {
+  InvoiceMaterialItem?: Array<Record<string, any>>;
+  invoiceAttachment?: string;
+  invoiceAttachmentBase64?: string;
+  invoiceAttachmentName?: string;
+  invoiceAttachmentType?: string;
+};
+
+function normalizeMaterialInvoicePayload(body: MaterialInvoiceRequestBody) {
+  const invoiceItemsInput = Array.isArray(body.InvoiceMaterialItem) ? body.InvoiceMaterialItem : [];
+
+  const invoiceItems = invoiceItemsInput.map((item) => ({
+    ...item,
+    quantity: Number(item.quantity ?? 0),
+    ratePerUnit: Number(item.ratePerUnit ?? 0),
+  }));
+
+  return {
+    ...body,
+    cgst: Number(body.cgst ?? 0),
+    sgst: Number(body.sgst ?? 0),
+    transportationCharges: Number(body.transportationCharges ?? 0),
+    InvoiceMaterialItem: invoiceItems,
+  };
+}
+
 export async function createMaterialInvoice(req: Request, res: Response): Promise<Response> {
   try {
-    const data = MaterialInvoiceSchema.parse(req.body);
+    const {
+      invoiceAttachmentBase64,
+      invoiceAttachmentName,
+      invoiceAttachmentType,
+      ...rest
+    } = req.body as MaterialInvoiceRequestBody;
+
+    if (!invoiceAttachmentBase64 || !invoiceAttachmentName) {
+      throw new AppError("Invoice attachment is required", 400);
+    }
+
+    const attachmentUrl = await uploadInvoiceAttachmentFromBase64(
+      invoiceAttachmentBase64,
+      invoiceAttachmentName,
+      invoiceAttachmentType ?? "application/pdf",
+    );
+
+    const normalizedPayload = normalizeMaterialInvoicePayload(rest);
+    const data = MaterialInvoiceSchema.parse({
+      ...normalizedPayload,
+      invoiceAttachment: attachmentUrl,
+    });
+
     const invoice = await materialInvoiceService.createMaterialInvoice(data);
     return res.status(201).json({ success: true, message: "created invoice successfully",  data: invoice });
   } catch (error) {
@@ -21,7 +71,28 @@ export async function createMaterialInvoice(req: Request, res: Response): Promis
 export async function updateMaterialInvoice(req: Request, res: Response): Promise<Response> {
   try {
     const { id } = req.params;
-    const data = MaterialInvoiceSchema.parse(req.body);
+    const {
+      invoiceAttachmentBase64,
+      invoiceAttachmentName,
+      invoiceAttachmentType,
+      ...rest
+    } = req.body as MaterialInvoiceRequestBody;
+
+    let attachmentUrl = rest.invoiceAttachment as string | undefined;
+    if (invoiceAttachmentBase64) {
+      attachmentUrl = await uploadInvoiceAttachmentFromBase64(
+        invoiceAttachmentBase64,
+        invoiceAttachmentName ?? "invoice.pdf",
+        invoiceAttachmentType ?? "application/pdf",
+      );
+    }
+
+    const normalizedPayload = normalizeMaterialInvoicePayload(rest);
+    const data = MaterialInvoiceSchema.parse({
+      ...normalizedPayload,
+      invoiceAttachment: attachmentUrl,
+    });
+
     const invoice = await materialInvoiceService.updateMaterialInvoice(id, data);
     return res.status(200).json({ success: true, message: "updated invoice successfully", data: invoice });
   } catch (error) {

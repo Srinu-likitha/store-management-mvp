@@ -3,7 +3,7 @@ import { z } from "zod";
 export const LoginRequest = z.object({
   email: z.string().min(1, "Username is required"),
   password: z.string().min(1, "Password is required"),
-})
+});
 export type LoginRequestParams = z.infer<typeof LoginRequest>;
 
 export const InvoiceMaterialItemSchema = z.object({
@@ -16,21 +16,34 @@ export const InvoiceMaterialItemSchema = z.object({
     "EXTERIOR",
     "OTHER"
   ]),
-  hnsCode: z.string(),
-  description: z.string(),
-  quantity: z.number(),
-  ratePerUnit: z.number(),
-  cost: z.number(),
+  hnsCode: z.string().min(1, "HNS code is required"),
+  description: z.string().min(1, "Description is required"),
+  quantity: z.number().min(0, "Quantity must be zero or greater"),
+  ratePerUnit: z.number().min(0, "Rate per unit must be zero or greater"),
+  cost: z.number().min(0, "Cost must be zero or greater"),
+});
+
+const pdfFileListSchema = z.custom<FileList>((files) => {
+  if (typeof FileList === "undefined") {
+    return false;
+  }
+  return files instanceof FileList;
+}, {
+  message: "Invoice attachment is required",
+}).refine((files) => files.length > 0, {
+  message: "Invoice attachment is required",
+}).refine((files) => files.item(0)?.type === "application/pdf", {
+  message: "Only PDF files are allowed",
 });
 
 export const MaterialInvoiceSchema = z.object({
   id: z.string().optional(),
-  dateOfReceipt: z.string(),
-  vendorName: z.string(),
-  invoiceNumber: z.string(),
-  invoiceDate: z.string(),
-  deliveryChallanNumber: z.string(),
-  vehicleNumber: z.string(),
+  dateOfReceipt: z.string().min(1, "Date of receipt is required"),
+  vendorName: z.string().min(1, "Vendor name is required"),
+  invoiceNumber: z.string().min(1, "Invoice number is required"),
+  invoiceDate: z.string().min(1, "Invoice date is required"),
+  deliveryChallanNumber: z.string().optional(),
+  vehicleNumber: z.string().optional(),
   materialCategory: z.enum([
     "CIVIL",
     "PLUMBING",
@@ -39,17 +52,18 @@ export const MaterialInvoiceSchema = z.object({
     "EXTERIOR",
     "OTHER"
   ]),
-  hnsCode: z.string(),
-  uom: z.string(),
-  vendorContactNumber: z.string(),
-  poNumber: z.string(),
-  poDate: z.string(),
-  purposeOfMaterial: z.string(),
-  invoiceAttachment: z.string(),
-  mrnNumber: z.string(),
-  ginNumber: z.string(),
+  hnsCode: z.string().min(1, "HNS code is required"),
+  uom: z.string().min(1, "Unit of measurement is required"),
+  vendorContactNumber: z.string().optional(),
+  poNumber: z.string().optional(),
+  poDate: z.string().optional(),
+  purposeOfMaterial: z.string().optional(),
+  cgst: z.number().min(0, "CGST cannot be negative"),
+  sgst: z.number().min(0, "SGST cannot be negative"),
+  transportationCharges: z.number().min(0, "Transportation charges cannot be negative"),
+  invoiceAttachment: pdfFileListSchema,
   remarks: z.string().optional(),
-  InvoiceMaterialItem: z.array(InvoiceMaterialItemSchema),
+  InvoiceMaterialItem: z.array(InvoiceMaterialItemSchema).min(1, "At least one invoice item is required"),
 });
 
 export const ApproveMaterialInvoiceSchema = z.object({
