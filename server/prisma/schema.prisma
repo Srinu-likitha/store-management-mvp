@@ -44,6 +44,7 @@ enum MaterialCategory {
 
 model MaterialInvoice {
   id                    String           @id @default(cuid())
+  serialNumber          String           @unique
   dateOfReceipt         DateTime
   vendorName            String
   invoiceNumber         String
@@ -60,6 +61,10 @@ model MaterialInvoice {
   invoiceAttachment     String
   mrnNumber             String
   ginNumber             String
+  cgst                  Float           @default(0)
+  sgst                  Float           @default(0)
+  transportationCharges Float           @default(0)
+  totalCost             Float           @default(0)
 
   approved Boolean   @default(false)
   paid     Boolean   @default(false)

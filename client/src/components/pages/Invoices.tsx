@@ -75,12 +75,12 @@ interface InvoiceMaterialItem {
   updatedBy: string | null;
   hnsCode: string;
   category: MaterialCategory;
-  description: string
-  quantity: number
-  ratePerUnit: number
-  cost: number
+  description: string;
+  quantity: number;
+  ratePerUnit: number;
+  cost: number;
   materialInvoiceId: string;
-}[];
+}
 
 export interface MaterialInvoicesQueryResponse extends Response {
   data: MaterialInvoice[];

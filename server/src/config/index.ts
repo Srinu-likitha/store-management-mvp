@@ -21,5 +21,10 @@ export const config = {
   },
   auth: {
     jwtSecret: getEnv("JWT_SECRET"),
+  },
+  supabase: {
+    url: getEnv("SUPABASE_URL"),
+    serviceRoleKey: getEnv("SUPABASE_SERVICE_ROLE_KEY"),
+    bucket: getEnv("SUPABASE_BUCKET"),
   }
 };
