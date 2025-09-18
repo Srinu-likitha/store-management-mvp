@@ -13,6 +13,6 @@ export default function validateInput(schema: ZodSchema<any>): RequestHandler {
     }
 
     req.body = parsedInput.data;
-    next();
+    return next();
   };
 }
