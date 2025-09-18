@@ -9,8 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum UserRole {
@@ -21,10 +22,10 @@ enum UserRole {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  role      UserRole
+  id       String   @id @default(cuid())
+  email    String   @unique
+  password String
+  role     UserRole
 
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -49,22 +50,22 @@ model MaterialInvoice {
   vendorName            String
   invoiceNumber         String
   invoiceDate           DateTime
-  deliveryChallanNumber String
-  vehicleNumber         String
+  deliveryChallanNumber String           @default("NOT PROVIDED")
+  vehicleNumber         String           @default("NOT PROVIDED")
   materialCategory      MaterialCategory
   hnsCode               String
   uom                   String
-  vendorContactNumber   String
-  poNumber              String
-  poDate                DateTime
-  purposeOfMaterial     String
+  vendorContactNumber   String           @default("NOT PROVIDED")
+  poNumber              String           @default("NOT PROVIDED")
+  poDate                DateTime         @default(now())
+  purposeOfMaterial     String           @default("NOT PROVIDED")
   invoiceAttachment     String
   mrnNumber             String
   ginNumber             String
-  cgst                  Float           @default(0)
-  sgst                  Float           @default(0)
-  transportationCharges Float           @default(0)
-  totalCost             Float           @default(0)
+  cgst                  Float            @default(0)
+  sgst                  Float            @default(0)
+  transportationCharges Float            @default(0)
+  totalCost             Float            @default(0)
 
   approved Boolean   @default(false)
   paid     Boolean   @default(false)
@@ -111,7 +112,7 @@ model DcEntry {
   dcAttachment        String
   bmrnNumber          String
 
-  approved Boolean   @default(false)
+  approved Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
