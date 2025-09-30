@@ -64,6 +64,10 @@ interface MaterialInvoice {
   paid: boolean;
   paidOn: string | null;
   remarks: string | null;
+  cgst: number | null;
+  sgst: number | null;
+  transportationCharges: number | null;
+  totalCost: number | null;
 }
 
 interface InvoiceMaterialItem {

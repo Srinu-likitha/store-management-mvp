@@ -22,6 +22,14 @@ import {
 
 export default function AddDc() {
 
+  // Generate unique BMRN number
+  const generateBmrnNumber = () => {
+    const now = new Date();
+    const time = now.toTimeString().slice(0, 8).replace(/:/g, '-');
+    const date = now.toISOString().slice(0, 10);
+    return `bmrn-${time}-${date}`;
+  };
+
   const createMaterialDcMuation = useMutation({
     mutationFn: async (data: DcEntryInput) => {
       const res = await api.post(API_ROUTES.MATERIAL_DCS.CREATE_MATERIAL_DC, data);
@@ -47,7 +55,7 @@ export default function AddDc() {
       receivedQuantity: undefined,
       purposeOfMaterial: "",
       dcAttachment: "",
-      bmrnNumber: ""
+      bmrnNumber: generateBmrnNumber()
     }
   });
 
@@ -274,16 +282,11 @@ export default function AddDc() {
                 </label>
                 <input 
                   {...register("bmrnNumber")}
-                  className={` w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 ${
-                    errors.bmrnNumber ? "border-red-500" : "border-gray-300"
-                  }`}
-                  placeholder="Enter BMRN number"
+                  readOnly
+                  className="w-full px-4 py-2 border rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed border-gray-300"
+                  placeholder="Auto-generated BMRN number"
                 />
-                {errors.bmrnNumber && (
-                  <p className="text-red-500 text-xs flex items-center gap-1">
-                    {errors.bmrnNumber.message as string}
-                  </p>
-                )}
+                <p className="text-xs text-gray-500">Auto-generated unique identifier</p>
               </div>
             </div>
 
@@ -291,7 +294,20 @@ export default function AddDc() {
             <div className="flex flex-col-reverse sm:flex-row gap-3 justify-end pt-6 border-t border-gray-200">
               <button
                 type="button"
-                onClick={() => reset()}
+                onClick={() => {
+                  reset({
+                    dateOfReceipt: "",
+                    vendorName: "",
+                    dcNumber: "",
+                    vehicleNumber: "",
+                    materialDescription: "",
+                    uom: "",
+                    receivedQuantity: undefined,
+                    purposeOfMaterial: "",
+                    dcAttachment: "",
+                    bmrnNumber: generateBmrnNumber()
+                  });
+                }}
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                 disabled={createMaterialDcMuation.isPending}
               >

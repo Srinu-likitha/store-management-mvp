@@ -55,17 +55,9 @@ export default function Home() {
       invoice => invoice.materialCategory === category
     ) || [];
 
-    // Sum costs from InvoiceMaterialItem array for each invoice
+    // Sum totalCost from each invoice in this category
     const totalCost = categoryInvoices.reduce((sum, invoice) => {
-      if (Array.isArray(invoice.InvoiceMaterialItem)) {
-        return sum + invoice.InvoiceMaterialItem
-          .filter(item => item.category === category)
-          .reduce((itemSum, item) => itemSum + (item.cost || 0), 0);
-      } else if (invoice.InvoiceMaterialItem && invoice.InvoiceMaterialItem.category === category) {
-        // fallback for single object (if ever)
-        return sum + (invoice.InvoiceMaterialItem.cost || 0);
-      }
-      return sum;
+      return sum + (invoice.totalCost || 0);
     }, 0);
 
     return {
@@ -86,7 +78,7 @@ export default function Home() {
     if (!acc[month]) {
       acc[month] = 0;
     }
-    acc[month] += invoice.InvoiceMaterialItem?.cost || 0;
+    acc[month] += invoice.totalCost || 0;
     return acc;
   }, {} as Record<string, number>);
 
@@ -104,7 +96,7 @@ export default function Home() {
       };
     }
     acc[invoice.vendorName].count += 1;
-    acc[invoice.vendorName].total += invoice.InvoiceMaterialItem?.cost || 0;
+    acc[invoice.vendorName].total += invoice.totalCost || 0;
     return acc;
   }, {} as Record<string, { count: number; total: number }>);
 
@@ -175,7 +167,7 @@ export default function Home() {
         <div className="bg-white rounded-lg shadow p-6">
           <h3 className="text-lg font-semibold text-gray-700">Total Spending</h3>
           <p className="text-3xl font-bold text-purple-600">
-            ₹{materialInvoicesQuery.data?.data?.reduce((sum, invoice) => sum + (invoice.InvoiceMaterialItem?.cost || 0), 0).toLocaleString('en-IN') || 0}
+            ₹{materialInvoicesQuery.data?.data?.reduce((sum, invoice) => sum + (invoice.totalCost || 0), 0).toLocaleString('en-IN') || 0}
           </p>
         </div>
         <div className="bg-white rounded-lg shadow p-6">
@@ -242,7 +234,7 @@ export default function Home() {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis tickFormatter={(value) => `₹${value / 1000}k`} />
-                <Tooltip formatter={(value) => [`₹${Number(value).toLocaleString('en-IN')}`, 'Spending']} />
+                <Tooltip formatter={(value) => [`${Number(value).toLocaleString('en-IN')}`]} />
                 <Legend />
                 <Bar dataKey="total" fill="#8b5cf6" name="Total Spending" />
                 <Bar dataKey="invoices" fill="#0282a6" name="Number of Invoices" />
@@ -298,7 +290,7 @@ export default function Home() {
                   <tr key={invoice.id}>
                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{invoice.vendorName}</td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{invoice.invoiceNumber}</td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">₹{invoice.InvoiceMaterialItem?.cost?.toLocaleString('en-IN') || 0}</td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">₹{invoice.totalCost?.toLocaleString('en-IN') || 0}</td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(invoice.createdAt).toLocaleDateString()}</td>
                   </tr>
                 ))}

@@ -25,7 +25,7 @@ export default function AddMaterialInvoice() {
     uom: "",
     vendorContactNumber: "",
     poNumber: "",
-    poDate: "",
+    poDate: today,
     purposeOfMaterial: "",
     cgst: 0,
     sgst: 0,
@@ -74,23 +74,26 @@ export default function AddMaterialInvoice() {
   const sgst = watch("sgst");
   const transportationCharges = watch("transportationCharges");
 
+  const calculateCost = (idx: number) => {
+    const item = watchedItems[idx];
+    if (!item) return 0;
+    const quantity = parseFloat(item.quantity?.toString() || '0') || 0;
+    const ratePerUnit = parseFloat(item.ratePerUnit?.toString() || '0') || 0;
+    return quantity * ratePerUnit;
+  };
+
   const totalMaterialCost = useMemo(() => {
     return watchedItems.reduce((sum, item) => {
-      const quantity = Number(item?.quantity || 0);
-      const ratePerUnit = Number(item?.ratePerUnit || 0);
-      return sum + quantity * ratePerUnit;
+      const quantity = parseFloat(item?.quantity?.toString() || '0') || 0;
+      const ratePerUnit = parseFloat(item?.ratePerUnit?.toString() || '0') || 0;
+      return sum + (quantity * ratePerUnit);
     }, 0);
-  }, [watchedItems]);
+  }, [watchedItems, calculateCost]);
 
   const totalCost = useMemo(() => {
     return totalMaterialCost + Number(cgst || 0) + Number(sgst || 0) + Number(transportationCharges || 0);
   }, [totalMaterialCost, cgst, sgst, transportationCharges]);
 
-  const calculateCost = (idx: number) => {
-    const quantity = watchedItems[idx]?.quantity || 0;
-    const ratePerUnit = watchedItems[idx]?.ratePerUnit || 0;
-    return quantity * ratePerUnit;
-  };
 
   const readFileAsBase64 = (file: File) => {
     return new Promise<string>((resolve, reject) => {
