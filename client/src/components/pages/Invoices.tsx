@@ -142,9 +142,7 @@ export default function Invoice() {
     }
     // Prepare data for Excel
     const excelData = filteredInvoices.map(inv => {
-      const totalAmount = Array.isArray(inv.InvoiceMaterialItem)
-        ? inv.InvoiceMaterialItem.reduce((sum, item) => sum + (item.cost || 0), 0)
-        : 0;
+      const totalAmount = (inv.totalCost || 0);
       return {
         "Vendor Name": inv.vendorName,
         "Invoice Number": inv.invoiceNumber,
@@ -297,9 +295,7 @@ export default function Invoice() {
             <tbody className="divide-y divide-gray-200">
               {filteredInvoices.length > 0 ? (
                 filteredInvoices.map(inv => {
-                  const totalAmount = Array.isArray(inv.InvoiceMaterialItem)
-                    ? inv.InvoiceMaterialItem.reduce((sum, item) => sum + (item.cost || 0), 0)
-                    : 0;
+                  const totalAmount = (inv.totalCost || 0);
 
                   return (
                     <React.Fragment key={inv.id}>
@@ -507,7 +503,10 @@ export default function Invoice() {
                                         </tr>
                                       ))}
                                       <tr className="bg-gray-50">
-                                        <td colSpan={4} className="px-4 py-2 text-sm font-medium text-gray-900 text-right">Total</td>
+                                        <td className="px-4 py-2 text-sm font-medium text-gray-900 text-right">CGST: {inv.cgst}</td>
+                                        <td className="px-4 py-2 text-sm font-medium text-gray-900 text-right">SGST: {inv.sgst}</td>
+                                        <td className="px-4 py-2 text-sm font-medium text-gray-900 text-right">Transport: {inv.transportationCharges}</td>
+                                        <td className="px-4 py-2 text-sm font-medium text-gray-900 text-right">Total</td>
                                         <td className="px-4 py-2 text-sm font-medium text-gray-900 text-right">{formatCurrency(totalAmount)}</td>
                                       </tr>
                                     </tbody>
